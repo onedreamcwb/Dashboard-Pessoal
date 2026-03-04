@@ -9,3 +9,4 @@ const CONFIG = {
     ],
     META_RESERVA_MESES: 6 // Sua regra de negócio
 };
+

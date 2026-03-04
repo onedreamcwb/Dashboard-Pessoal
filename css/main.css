@@ -1,0 +1,55 @@
+:root {
+    /* Paleta de Cores baseada na Planilha */
+    --primary-color: #2563eb;
+    --success-color: #10b981;
+    /* Verde Entrada [cite: 2] */
+    --danger-color: #ef4444;
+    /* Vermelho Saída [cite: 3] */
+    --warning-color: #f59e0b;
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+
+    /* Espaçamento e Bordas */
+    --radius: 8px;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+header {
+    background: var(--card-bg);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav button {
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: all 0.2s;
+}
+
+nav button:hover {
+    background: var(--primary-color);
+    color: white;
+}
