@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro | Gustavo Araujo</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+
+<body>
+    <header>
+        <h1>Controle Financeiro 2026</h1>
+        <nav>
+            <button onclick="app.switchTab('dashboard')">Dashboard</button>
+            <button onclick="app.switchTab('simulador')">Simulador</button>
+        </nav>
+    </header>
+
+    <main id="app-content">
+        <section id="dashboard" class="tab-content">
+            <div class="summary-cards">
+                <div class="card" id="card-entrada">Entradas: <span class="value">R$ 0,00</span></div>
+                <div class="card" id="card-saida">Saídas: <span class="value">R$ 0,00</span></div>
+                <div class="card" id="card-resultado">Resultado: <span class="value">R$ 0,00</span></div>
+            </div>
+
+            <section class="form-section">
+                <h3>Novo Lançamento</h3>
+                <form id="finance-form">
+                    <input type="text" id="desc" placeholder="Descrição (ex: Aluguel)" required>
+                    <input type="number" id="valor" placeholder="Valor (R$)" step="0.01" required>
+                    <select id="tipo">
+                        <option value="entrada">Entrada</option>
+                        <option value="saida">Saída</option>
+                    </select>
+                    <select id="categoria" required>
+                    </select>
+                    <input type="date" id="data" required>
+                    <button type="submit">Adicionar</button>
+                </form>
+            </section>
+
+            <section class="list-section">
+                <h3>Movimentações do Mês</h3>
+                <table id="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                            <th>Valor</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </section>
+
+        <section id="simulador" class="tab-content" style="display:none;">
+            <h2>Calculadora de Reserva e Juros</h2>
+            <div id="reserva-logic">
+                <p>Sua meta de Reserva (6 meses): <strong id="reserva-valor">R$ 0,00</strong></p>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/core/constants.js"></script>
+    <script src="js/core/calculator.js"></script>
+    <script src="js/data/storage.js"></script>
+    <script src="js/ui/renderer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
