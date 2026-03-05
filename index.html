@@ -8,14 +8,15 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/modules.css">
 </head>
 
 <body>
     <header>
         <h1>Controle Financeiro 2026</h1>
         <nav>
-            <button onclick="app.switchTab('dashboard')">Dashboard</button>
-            <button onclick="app.switchTab('simulador')">Simulador</button>
+            <button onclick="App.switchTab('dashboard')">Dashboard</button>
+            <button onclick="App.switchTab('simulador')">Simulador</button>
         </nav>
     </header>
 
@@ -61,9 +62,69 @@
         </section>
 
         <section id="simulador" class="tab-content" style="display:none;">
-            <h2>Calculadora de Reserva e Juros</h2>
-            <div id="reserva-logic">
-                <p>Sua meta de Reserva (6 meses): <strong id="reserva-valor">R$ 0,00</strong></p>
+
+            <div class="simulator-card highlight-card">
+                <div class="card-header">
+                    <h3>🛡️ Reserva de Emergência (6 Meses)</h3>
+                    <p>Baseada na sua média de gastos atual</p>
+                </div>
+                <div class="card-body">
+                    <div class="stat-group">
+                        <label>Sua Média de Gastos</label>
+                        <span id="sim-media-gastos" class="stat-value">R$ 0,00</span>
+                    </div>
+                    <div class="stat-group">
+                        <label>Meta da Reserva</label>
+                        <span id="sim-meta-reserva" class="stat-value text-blue">R$ 0,00</span>
+                    </div>
+                    <div class="progress-container">
+                        <label>Status Atual (Saldo em Conta / Meta)</label>
+                        <div class="progress-bar">
+                            <div id="sim-progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="sim-progress-text">0% Concluído</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="simulator-container">
+                <h3>📈 Projeção de Investimentos</h3>
+                <form id="calc-form">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>Valor Inicial (R$)</label>
+                            <input type="number" id="calc-inicial" placeholder="0,00">
+                        </div>
+                        <div class="input-group">
+                            <label>Aporte Mensal (R$)</label>
+                            <input type="number" id="calc-aporte" placeholder="0,00">
+                        </div>
+                        <div class="input-group">
+                            <label>Taxa de Juros (% ao ano)</label>
+                            <input type="number" id="calc-taxa" value="10" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label>Tempo (Anos)</label>
+                            <input type="number" id="calc-tempo" value="5">
+                        </div>
+                    </div>
+                    <button type="button" onclick="App.runSimulation()">Calcular Futuro</button>
+                </form>
+
+                <div id="calc-results" class="results-grid" style="display:none;">
+                    <div class="result-box">
+                        <small>Total Investido</small>
+                        <span id="res-investido">R$ 0,00</span>
+                    </div>
+                    <div class="result-box">
+                        <small>Total em Juros</small>
+                        <span id="res-juros" class="text-green">R$ 0,00</span>
+                    </div>
+                    <div class="result-box main-result">
+                        <small>Montante Final</small>
+                        <span id="res-total">R$ 0,00</span>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
