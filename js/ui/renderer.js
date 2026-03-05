@@ -26,9 +26,35 @@ const Renderer = {
         tbody.prepend(tr);
     },
 
+    // --- ATUALIZE ESTA FUNÇÃO ABAIXO ---
     updateSummary: function (totals) {
-        // Atualiza os Cards (Vamos implementar a lógica real na próxima etapa)
-        // Por enquanto, placeholder:
-        console.log("Totais atualizados:", totals);
+        const cardEntrada = document.querySelector('#card-entrada .value');
+        const cardSaida = document.querySelector('#card-saida .value');
+        const cardResultado = document.querySelector('#card-resultado .value');
+
+        // Atualiza Cards Principais
+        if (cardEntrada) cardEntrada.textContent = this.formatCurrency(totals.income);
+        if (cardSaida) cardSaida.textContent = this.formatCurrency(totals.expense);
+
+        if (cardResultado) {
+            cardResultado.textContent = this.formatCurrency(totals.balance);
+            // Muda a cor do texto do resultado se estiver negativo
+            cardResultado.style.color = totals.balance >= 0 ? 'var(--success-color)' : 'var(--danger-color)';
+        }
+
+        // Atualiza a Meta de Reserva na aba Simulador (Se existir)
+        const reserveElement = document.getElementById('reserva-valor');
+        if (reserveElement && totals.reserveTarget) {
+            reserveElement.textContent = this.formatCurrency(totals.reserveTarget);
+        }
+    },
+
+    // Função utilitária para não repetir código
+    formatCurrency: function (value) {
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(value);
     }
 };
+

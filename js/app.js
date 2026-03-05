@@ -20,10 +20,15 @@ const App = {
     },
 
     updateDashboard: function () {
-        // Chama a calculadora para processar os totais
-        const totals = Calculator.calculateTotals(Storage.getTransactions());
+        const transactions = Storage.getTransactions();
 
-        // Atualiza o DOM dos cards
+        // Calcula Totais
+        const totals = Calculator.calculateTotals(transactions);
+
+        // Calcula Meta de Reserva (Regra dos 6 meses)
+        totals.reserveTarget = Calculator.calculateReserveTarget(transactions);
+
+        // Atualiza o DOM
         Renderer.updateSummary(totals);
     },
 
