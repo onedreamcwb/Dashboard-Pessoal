@@ -41,5 +41,30 @@ const Calculator = {
 
         // Meta = Média x 6
         return averageMonthlyExpense * 6;
+    },
+    // Fórmula de Juros Compostos com Aporte Mensal
+    calculateCompoundInterest: function (initial, monthly, rateYearly, years) {
+        const r = rateYearly / 100 / 12; // Taxa mensal
+        const n = years * 12;            // Número de meses
+
+        // Valor Futuro do Montante Inicial: P * (1 + r)^n
+        const futureValueInitial = initial * Math.pow(1 + r, n);
+
+        // Valor Futuro dos Aportes: PMT * [ ((1 + r)^n - 1) / r ]
+        let futureValueContributions = 0;
+        if (r > 0) {
+            futureValueContributions = monthly * ((Math.pow(1 + r, n) - 1) / r);
+        } else {
+            futureValueContributions = monthly * n;
+        }
+
+        const total = futureValueInitial + futureValueContributions;
+        const totalInvested = initial + (monthly * n);
+
+        return {
+            total: total,
+            invested: totalInvested,
+            interest: total - totalInvested
+        };
     }
 };

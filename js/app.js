@@ -7,6 +7,25 @@ const App = {
 
         // Carrega dados iniciais (se houver)
         this.loadData();
+
+    },
+    runSimulation: function () {
+        // 1. Pega os valores dos inputs
+        const initial = parseFloat(document.getElementById('calc-inicial').value) || 0;
+        const monthly = parseFloat(document.getElementById('calc-aporte').value) || 0;
+        const rate = parseFloat(document.getElementById('calc-taxa').value) || 0;
+        const years = parseFloat(document.getElementById('calc-tempo').value) || 0;
+
+        // 2. Chama a calculadora
+        const result = Calculator.calculateCompoundInterest(initial, monthly, rate, years);
+
+        // 3. Mostra os resultados na tela
+        document.getElementById('res-investido').textContent = Renderer.formatCurrency(result.invested);
+        document.getElementById('res-juros').textContent = Renderer.formatCurrency(result.interest);
+        document.getElementById('res-total').textContent = Renderer.formatCurrency(result.total);
+
+        // 4. Mostra a área de resultados (que estava oculta)
+        document.getElementById('calc-results').style.display = 'grid';
     },
 
     loadData: function () {
@@ -30,6 +49,8 @@ const App = {
 
         // Atualiza o DOM
         Renderer.updateSummary(totals);
+        // ADICIONE ESTA LINHA:
+        Renderer.updateSimulator(totals);
     },
 
     // Função para alternar abas (Dashboard <-> Simulador)

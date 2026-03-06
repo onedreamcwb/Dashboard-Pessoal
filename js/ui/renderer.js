@@ -55,6 +55,41 @@ const Renderer = {
             style: 'currency',
             currency: 'BRL'
         }).format(value);
+    },
+    updateSimulator: function (totals) {
+        const metaReserva = totals.reserveTarget || 0;
+        const saldoAtual = totals.balance || 0; // Assume que o saldo disponível vai pra reserva
+
+        // Atualiza textos
+        const elMedia = document.getElementById('sim-media-gastos');
+        const elMeta = document.getElementById('sim-meta-reserva');
+
+        if (elMedia) elMedia.textContent = this.formatCurrency(metaReserva / 6); // Média mensal
+        if (elMeta) elMeta.textContent = this.formatCurrency(metaReserva);
+
+        // Atualiza Barra de Progresso
+        const progressFill = document.getElementById('sim-progress-fill');
+        const progressText = document.getElementById('sim-progress-text');
+
+        if (progressFill && progressText) {
+            let percentage = 0;
+            if (metaReserva > 0) {
+                percentage = (saldoAtual / metaReserva) * 100;
+            }
+
+            // Trava em 100% visualmente se passar
+            const visualPercentage = Math.min(percentage, 100);
+
+            progressFill.style.width = `${visualPercentage}%`;
+            progressText.textContent = `${percentage.toFixed(1)}% da Meta`;
+
+            // Muda cor da barra se completou
+            if (percentage >= 100) {
+                progressFill.style.backgroundColor = 'var(--success-color)';
+            } else {
+                progressFill.style.backgroundColor = 'var(--primary-color)';
+            }
+        }
     }
 };
 
