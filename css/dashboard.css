@@ -101,3 +101,110 @@ th {
     cursor: pointer;
     outline: none;
 }
+
+/* Container Geral dos Gráficos */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 0 2rem 2rem;
+    /* Alinhamento com o resto do dashboard */
+}
+
+/* O Card (Caixa branca) */
+.chart-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chart-card h3 {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+/* O Gráfico em si (Círculo) */
+.donut-chart {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    position: relative;
+    /* Fundo padrão cinza caso não tenha dados */
+    background: var(--border-color);
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* O "Buraco" da Rosca (Círculo branco sobreposto) */
+.donut-chart::after {
+    content: "";
+    position: absolute;
+    width: 160px;
+    /* Define a espessura da borda */
+    height: 160px;
+    background: var(--card-bg);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Texto no meio do gráfico */
+.chart-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+}
+
+.chart-center span {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* Legenda (Abaixo do gráfico) */
+.chart-legend {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background: #f1f5f9;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
