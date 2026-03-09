@@ -289,21 +289,23 @@ body {
     color: #64748b;
     text-transform: uppercase;
 }
+/* css/main.css */
 
-/* ESTILO DOS CAMPOS (INPUTS E SELECTS) */
-/* Usamos #finance-form para garantir prioridade sobre qualquer outro CSS */
 #finance-form input,
 #finance-form select {
-    height: 50px !important; /* Altura Fixa */
+    height: 50px !important;
     padding: 0 15px;
     border: 2px solid #e2e8f0;
     border-radius: 8px;
     font-size: 1rem;
     color: #1e293b;
     background-color: #f8fafc;
-    width: 100% !important; /* FORÇA LARGURA TOTAL */
+    
+    /* width: 100% !important;  <--- REMOVA ESTA LINHA OU COMENTE ELA */
+    width: auto; /* Opcional: Deixa o navegador decidir */
+    
     box-sizing: border-box;
-    display: block; /* Garante comportamento de bloco */
+    display: block;
 }
 
 #finance-form input:focus,
