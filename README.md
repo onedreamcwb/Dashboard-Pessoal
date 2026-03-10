@@ -16,8 +16,13 @@ Um sistema completo de Gestão Financeira Pessoal (ERP) construído do zero. O o
   <br>
   <em>Dashboard principal mostrando resumos e gráficos gerados nativamente.</em>
 </p>
+<br>
 
-
+<p align="center">
+  <img src="assets/images/Dashboards/dashboard mobile.png" width="100%" title="Versão Mobile">
+  <br>
+  <em>Dashboard Mobile inicial.</em>
+</p>
 
 ## 🎯 Motivação
 A maioria dos aplicativos financeiros exige cadastros demorados, dependem de internet ou guardam seus dados em servidores de terceiros. A proposta do **Finanças 2026** é ser uma ferramenta:
