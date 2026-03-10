@@ -188,8 +188,65 @@
                 </div>
             </section>
 
-            <section id="tab-entradas" class="tab-content" style="display: none;"><h2>Gestão de Entradas (Em breve)</h2></section>
-            <section id="tab-saidas" class="tab-content" style="display: none;"><h2>Gestão de Saídas (Em breve)</h2></section>
+            <section id="tab-entradas" class="tab-content" style="display: none;">
+                <div style="margin-bottom: 25px;">
+                    <h2 style="color: #1e293b; font-size: 1.5rem; margin-bottom: 8px;">Gestão de Entradas</h2>
+                    <p style="color: #64748b;">Acompanhe todas as suas receitas e rendimentos do mês selecionado.</p>
+                </div>
+
+                <div class="summary-cards" style="margin-bottom: 30px; grid-template-columns: 1fr;">
+                    <div class="card" style="border-left-color: var(--success-color);">
+                        <h3 style="color: #64748b; font-size: 0.9rem;">Total de Entradas no Mês</h3>
+                        <span class="value" id="total-entradas-aba" style="color: var(--success-color);">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <div class="list-section">
+                    <table id="entradas-table" style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <thead style="background: #f8fafc; text-align: left;">
+                            <tr>
+                                <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #64748b;">Data</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #64748b;">Descrição</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #64748b;">Categoria</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #64748b; text-align: right;">Valor</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #64748b; text-align: center;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tab-saidas" class="tab-content" style="display: none;">
+                <div style="margin-bottom: 25px;">
+                    <h2 style="color: #1e293b; font-size: 1.5rem; margin-bottom: 8px;">Gestão de Saídas</h2>
+                    <p style="color: #64748b;">Analise detalhadamente todos os seus gastos e despesas do mês selecionado.</p>
+                </div>
+
+                <div class="summary-cards" style="margin-bottom: 30px; grid-template-columns: 1fr;">
+                    <div class="card" style="border-left-color: var(--danger-color);">
+                        <h3 style="color: #64748b; font-size: 0.9rem;">Total de Saídas no Mês</h3>
+                        <span class="value" id="total-saidas-aba" style="color: var(--danger-color);">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <div class="list-section">
+                    <table id="saidas-table" style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <thead style="background: #f8fafc; text-align: left;">
+                            <tr>
+                                <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #64748b;">Data</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #64748b;">Descrição</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #64748b;">Categoria</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #64748b; text-align: right;">Valor</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #e2e8f0; color: #64748b; text-align: center;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </section>
             <section id="tab-aporte" class="tab-content" style="display: none;"><h2>Meus Aportes (Em breve)</h2></section>
             <section id="tab-mensal" class="tab-content" style="display: none;">
                 <div style="margin-bottom: 25px;">

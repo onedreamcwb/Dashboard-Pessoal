@@ -74,6 +74,8 @@ const App = {
                 .sort((a, b) => new Date(b.date) - new Date(a.date))
                 .forEach(tr => Renderer.renderTransaction(tr));
         }
+        // 7. Atualiza as Abas Específicas (Entradas e Saídas)
+        this.updateSeparatedTabs(filteredTransactions);
     },
 
     // --- AÇÕES DE CRUD (Editar/Excluir) ---
@@ -252,6 +254,66 @@ const App = {
             
             alert("Conta fixa cancelada com sucesso!");
         }
+    },
+    // --- LÓGICA DAS ABAS SEPARADAS (ENTRADAS E SAÍDAS) ---
+    
+    updateSeparatedTabs: function(filteredTransactions) {
+        // 1. Separa os dados
+        const entradas = filteredTransactions.filter(t => t.type === 'entrada');
+        const saidas = filteredTransactions.filter(t => t.type === 'saida');
+
+        // 2. Calcula Totais
+        const totalEntradas = entradas.reduce((acc, t) => acc + Number(t.amount), 0);
+        const totalSaidas = saidas.reduce((acc, t) => acc + Number(t.amount), 0);
+
+        // 3. Atualiza os Cards das Abas
+        const cardEntrada = document.getElementById('total-entradas-aba');
+        if (cardEntrada) cardEntrada.textContent = Renderer.formatCurrency(totalEntradas);
+        
+        const cardSaida = document.getElementById('total-saidas-aba');
+        if (cardSaida) cardSaida.textContent = Renderer.formatCurrency(totalSaidas);
+
+        // 4. Renderiza as Tabelas (Reutilizando a inteligência de renderização)
+        this.renderTableData('#entradas-table tbody', entradas, 'entrada');
+        this.renderTableData('#saidas-table tbody', saidas, 'saida');
+    },
+
+    // Função Auxiliar para não repetir código
+    renderTableData: function(selector, transactions, type) {
+        const tbody = document.querySelector(selector);
+        if (!tbody) return;
+        
+        tbody.innerHTML = ''; // Limpa a tabela
+        
+        if (transactions.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color: #64748b;">Nenhuma ${type} registrada neste mês.</td></tr>`;
+            return;
+        }
+
+        // Ordena por data (mais recente primeiro)
+        transactions.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(t => {
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = "1px solid #f1f5f9";
+            
+            // Formata a data de YYYY-MM-DD para DD/MM/YYYY
+            const [ano, mes, dia] = t.date.split('-');
+            const dataFormatada = `${dia}/${mes}/${ano}`;
+            
+            const corValor = t.type === 'entrada' ? 'var(--success-color)' : 'var(--danger-color)';
+            const sinal = t.type === 'saida' ? '- ' : '';
+            
+            tr.innerHTML = `
+                <td style="padding: 15px; color: #64748b;">${dataFormatada}</td>
+                <td style="padding: 15px; font-weight: 500; color: #1e293b;">${t.description}</td>
+                <td style="padding: 15px;"><span style="background: #e2e8f0; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; color: #475569;">${t.category}</span></td>
+                <td style="padding: 15px; font-weight: bold; color: ${corValor}; text-align: right;">${sinal}${Renderer.formatCurrency(t.amount)}</td>
+                <td style="padding: 15px; text-align: center;">
+                    <button onclick="App.handleEdit('${t.id}')" style="background: none; border: none; cursor: pointer; font-size: 1.1rem; margin-right: 10px;" title="Editar">✏️</button>
+                    <button onclick="App.handleDelete('${t.id}')" style="background: none; border: none; cursor: pointer; font-size: 1.1rem;" title="Excluir">🗑️</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
     }
 };
 
