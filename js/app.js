@@ -41,6 +41,11 @@ const App = {
             document.getElementById('aporte-data').value = new Date().toISOString().split('T')[0];
             formAporte.addEventListener('submit', (e) => this.handleAporteSubmit(e));
         }
+        // Ouvinte do formulário de Património
+        const formPatrimonio = document.getElementById('form-patrimonio');
+        if (formPatrimonio) {
+            formPatrimonio.addEventListener('submit', (e) => this.handlePatrimonioSubmit(e));
+        }
     },
 
     loadData: function() {
@@ -203,6 +208,10 @@ const App = {
         // Se abriu a aba Aporte, carrega os dados dela
         if (tabId === 'tab-aporte') {
             this.updateAporteTab();
+        }
+        // Se abriu a aba Património, carrega os dados dela
+        if (tabId === 'tab-patrimonio') {
+            this.updatePatrimonioTab();
         }
     },
 
@@ -427,6 +436,92 @@ const App = {
             localStorage.setItem('finance_aportes', JSON.stringify(aportes));
             
             this.updateAporteTab();
+        }
+    },
+    // --- LÓGICA DA ABA PATRIMÓNIO ---
+
+    handlePatrimonioSubmit: function(e) {
+        e.preventDefault();
+        
+        const item = {
+            id: Date.now().toString(),
+            description: document.getElementById('patrimonio-desc').value,
+            type: document.getElementById('patrimonio-tipo').value,
+            amount: parseFloat(document.getElementById('patrimonio-valor').value)
+        };
+
+        // Guarda numa base de dados dedicada ao Património
+        const patrimonio = JSON.parse(localStorage.getItem('finance_patrimonio') || '[]');
+        patrimonio.push(item);
+        localStorage.setItem('finance_patrimonio', JSON.stringify(patrimonio));
+
+        document.getElementById('patrimonio-desc').value = '';
+        document.getElementById('patrimonio-valor').value = '';
+        
+        this.updatePatrimonioTab();
+        alert("Património atualizado com sucesso! 🏛️");
+    },
+
+    updatePatrimonioTab: function() {
+        const tbody = document.querySelector('#patrimonio-table tbody');
+        if (!tbody) return;
+        
+        const patrimonio = JSON.parse(localStorage.getItem('finance_patrimonio') || '[]');
+        
+        let totalAtivos = 0;
+        let totalPassivos = 0;
+        
+        tbody.innerHTML = '';
+        
+        if (patrimonio.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 20px; color: #64748b;">Nenhum bem ou dívida registada.</td></tr>`;
+        } else {
+            patrimonio.forEach(item => {
+                // Matemática
+                if (item.type === 'ativo') totalAtivos += Number(item.amount);
+                if (item.type === 'passivo') totalPassivos += Number(item.amount);
+                
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = "1px solid #f1f5f9";
+                
+                // Formatações Visuais
+                const corTipo = item.type === 'ativo' ? 'var(--success-color)' : 'var(--danger-color)';
+                const labelTipo = item.type === 'ativo' ? 'Ativo' : 'Passivo';
+                const corBadge = item.type === 'ativo' ? '#dcfce7' : '#fee2e2';
+                const corTextoBadge = item.type === 'ativo' ? '#166534' : '#991b1b';
+                
+                tr.innerHTML = `
+                    <td style="padding: 15px; font-weight: 600; color: #1e293b;">${item.description}</td>
+                    <td style="padding: 15px;"><span style="background: ${corBadge}; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; color: ${corTextoBadge}; font-weight: bold;">${labelTipo}</span></td>
+                    <td style="padding: 15px; font-weight: bold; color: ${corTipo}; text-align: right;">R$ ${item.amount.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    <td style="padding: 15px; text-align: center;">
+                        <button onclick="App.deletePatrimonio('${item.id}')" style="background: none; border: none; cursor: pointer; font-size: 1.1rem;" title="Remover">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        // Atualiza os Cards Superiores
+        const patrimonioLiquido = totalAtivos - totalPassivos;
+        
+        document.getElementById('patrimonio-ativos').textContent = `R$ ${totalAtivos.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        document.getElementById('patrimonio-passivos').textContent = `R$ ${totalPassivos.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        
+        const liquiElement = document.getElementById('patrimonio-liquido');
+        liquiElement.textContent = `R$ ${patrimonioLiquido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        
+        // Fica vermelho se as dívidas forem maiores que os bens
+        liquiElement.style.color = patrimonioLiquido >= 0 ? '#8b5cf6' : 'var(--danger-color)';
+    },
+
+    deletePatrimonio: function(id) {
+        if (confirm("Tem a certeza de que deseja remover este item do seu património?")) {
+            let patrimonio = JSON.parse(localStorage.getItem('finance_patrimonio') || '[]');
+            patrimonio = patrimonio.filter(p => String(p.id) !== String(id));
+            localStorage.setItem('finance_patrimonio', JSON.stringify(patrimonio));
+            
+            this.updatePatrimonioTab();
         }
     }
 };

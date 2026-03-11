@@ -378,6 +378,53 @@ body {
 .btn-submit:hover { filter: brightness(1.1); transform: translateY(-2px); }
 .btn-cancel:hover { background-color: #cbd5e1; }
 
+/* =========================================
+   7. ESTILOS ESPECÍFICOS (PATRIMÔNIO E APORTES)
+   ========================================= */
+
+/* Cabeçalhos das Abas */
+.tab-header { margin-bottom: 25px; }
+.tab-header h2 { color: #1e293b; font-size: 1.5rem; margin-bottom: 8px; }
+.tab-header p { color: #64748b; }
+
+/* Cards de Patrimônio */
+.card-ativo { border-left-color: var(--success-color); }
+.card-ativo .value { color: var(--success-color); }
+
+.card-passivo { border-left-color: var(--danger-color); }
+.card-passivo .value { color: var(--danger-color); }
+
+.card-liquido { 
+    border-left-color: #8b5cf6; 
+    background: linear-gradient(to right, #ffffff, #f3f0ff); 
+}
+.card-liquido .value { color: #8b5cf6; }
+
+/* Formulário Roxo */
+.form-purple { background: #f8fafc; border: 1px dashed #cbd5e1; }
+.form-purple h3 { margin-bottom: 15px; color: #334155; font-size: 1.1rem; }
+.grid-patrimonio { grid-template-columns: 2fr 1fr 1fr; }
+.form-actions-right { text-align: right; margin-top: 15px; }
+.btn-purple { background-color: #8b5cf6 !important; color: white !important; }
+.btn-purple:hover { filter: brightness(1.1); }
+
+/* Tabela Roxa */
+.custom-table {
+    width: 100%; 
+    border-collapse: collapse; 
+    background: white; 
+    border-radius: 8px; 
+    overflow: hidden; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.table-purple thead { background: #f5f3ff; text-align: left; }
+.table-purple th { padding: 15px; border-bottom: 2px solid #ddd6fe; color: #5b21b6; }
+.custom-table td { padding: 15px; }
+
+/* Utilitários de texto */
+.text-right { text-align: right !important; }
+.text-center { text-align: center !important; }
+
 /* RESPONSIVIDADE */
 @media (max-width: 1024px) {
     .row-grid {
