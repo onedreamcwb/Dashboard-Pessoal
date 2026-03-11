@@ -1,22 +1,25 @@
 /* =========================================
-   1. VARIÁVEIS E RESET GERAL
+   1. VARIÁVEIS E RESET GERAL (TEMA DARK)
    ========================================= */
 :root {
-    --primary-color: #3b82f6;   /* Azul padrão */
-    --secondary-color: #1e293b; /* Azul escuro (Sidebar) */
-    --background-color: #f1f5f9; /* Cinza claro (Fundo) */
-    --card-bg: #ffffff;
+    --primary-color: #3b82f6;    /* Azul mantido para contraste */
+    --secondary-color: #020617;  /* Slate 950 (Fundo da Sidebar - Bem escuro) */
+    --background-color: #0f172a; /* Slate 900 (Fundo geral do App) */
+    --card-bg: #1e293b;          /* Slate 800 (Fundo dos Cards e Tabelas) */
     
-    --text-main: #1e293b;
-    --text-muted: #64748b;
-    --text-light: #f8fafc;
+    --text-main: #f8fafc;        /* Texto Principal (Branco gelo) */
+    --text-muted: #94a3b8;       /* Texto Secundário (Cinza) */
+    --text-light: #ffffff;       /* Branco puro para destaques */
 
-    --success-color: #10b981;
-    --danger-color: #ef4444;
-    --warning-color: #f59e0b;
+    --success-color: #10b981;    /* Verde para Entradas */
+    --danger-color: #ef4444;     /* Vermelho para Saídas */
+    --warning-color: #f59e0b;    /* Amarelo para Saldo */
 
-    --radius: 8px;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --border-color: #334155;     /* Slate 700 (Linhas divisórias e bordas) */
+    --input-bg: #0f172a;         /* Fundo dos campos de digitar */
+
+    --radius: 12px;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3); /* Sombra mais profunda para o escuro */
     --transition: 0.3s ease;
 }
 
@@ -440,6 +443,58 @@ body {
 .calc-results-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-top: 20px; }
 .calc-total-text { font-size: 1.2rem; margin-top: 10px; color: var(--primary-color); }
 
+/* =========================================
+   9. TEMA DARK (OVERRIDES E CORREÇÕES GLOBAIS)
+   ========================================= */
+
+/* Força os textos padronizados a seguirem as novas cores claras */
+.text-title { color: var(--text-main) !important; }
+.text-subtitle, .text-card-title, .form-title-aporte { color: var(--text-muted) !important; }
+
+/* Header Superior e Filtro de Mês */
+.top-header { background: var(--card-bg) !important; border-bottom: 1px solid var(--border-color) !important; }
+.date-filter input { background: var(--input-bg) !important; color: var(--text-main) !important; border-color: var(--border-color) !important; }
+.menu-toggle { color: var(--text-main) !important; }
+
+/* Formulários (Inputs Escuros) */
+.transaction-form input, .transaction-form select {
+    background-color: var(--input-bg) !important;
+    color: var(--text-main) !important;
+    border: 2px solid var(--border-color) !important;
+}
+.transaction-form input:focus, .transaction-form select:focus {
+    border-color: var(--primary-color) !important;
+    background-color: var(--card-bg) !important;
+}
+
+/* Gráfico de Rosca (Arruma o buraco branco no meio) */
+.donut-chart::after { background: var(--card-bg) !important; }
+.legend-item { background: var(--input-bg) !important; color: var(--text-muted) !important; }
+
+/* Tabelas Globais */
+table, .custom-table { background: var(--card-bg) !important; }
+th, .custom-table thead, .table-aporte thead, .table-purple thead { 
+    background-color: var(--background-color) !important; 
+    color: var(--text-muted) !important; 
+    border-bottom: 2px solid var(--border-color) !important; 
+}
+
+/* Força os textos das tabelas a ficarem brancos, sobrescrevendo o Javascript */
+td { border-bottom: 1px solid var(--border-color) !important; color: var(--text-main) !important; }
+
+/* Tags de Categoria Escuras */
+.category-tag, span[style*="#e2e8f0"], span[style*="#dbeafe"] { 
+    background: var(--border-color) !important; 
+    color: var(--text-main) !important; 
+}
+.btn-action:hover { background-color: var(--border-color) !important; }
+
+/* Remove os gradientes brancos antigos dos cards e formulários */
+.card-aporte-bg, .card-liquido, .form-purple, .calc-results-box { 
+    background: var(--card-bg) !important; 
+    background-image: none !important;
+    border-color: var(--border-color) !important;
+}
 /* RESPONSIVIDADE */
 @media (max-width: 1024px) {
     .row-grid {
