@@ -247,7 +247,65 @@
                     </table>
                 </div>
             </section>
-            <section id="tab-aporte" class="tab-content" style="display: none;"><h2>Meus Aportes (Em breve)</h2></section>
+            <section id="tab-aporte" class="tab-content" style="display: none;">
+                <div style="margin-bottom: 25px;">
+                    <h2 style="color: #1e293b; font-size: 1.5rem; margin-bottom: 8px;">Meus Aportes</h2>
+                    <p style="color: #64748b;">Registre o dinheiro que você está investindo e pagando a si mesmo no futuro.</p>
+                </div>
+
+                <div class="summary-cards" style="margin-bottom: 30px; grid-template-columns: 1fr;">
+                    <div class="card" style="border-left-color: #3b82f6; background: linear-gradient(to right, #ffffff, #f8fafc);">
+                        <h3 style="color: #64748b; font-size: 0.9rem;">Total Investido (Mês Atual)</h3>
+                        <span class="value" id="aporte-total-mes" style="color: #3b82f6;">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <form id="form-aporte" class="transaction-form" style="background: #f8fafc; border: 1px dashed #cbd5e1;">
+                    <h3 style="margin-bottom: 15px; color: #334155; font-size: 1.1rem;">💰 Registrar Novo Aporte</h3>
+                    <div class="row-grid" style="grid-template-columns: 2fr 1.5fr 1fr 1fr;">
+                        <div class="input-group">
+                            <label>Onde Investiu? (Ativo)</label>
+                            <input type="text" id="aporte-desc" placeholder="Ex: Tesouro Selic, CDB Itaú..." required style="height: 45px !important;">
+                        </div>
+                        <div class="input-group">
+                            <label>Categoria</label>
+                            <select id="aporte-cat" required style="height: 45px !important;">
+                                <option value="Renda Fixa">Renda Fixa (Seguro)</option>
+                                <option value="Renda Variável">Renda Variável (Ações/FIIs)</option>
+                                <option value="Criptomoedas">Criptomoedas</option>
+                                <option value="Reserva de Emergência">Reserva de Emergência</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Valor (R$)</label>
+                            <input type="number" id="aporte-valor" placeholder="0,00" step="0.01" required style="height: 45px !important;">
+                        </div>
+                        <div class="input-group">
+                            <label>Data</label>
+                            <input type="date" id="aporte-data" required style="height: 45px !important;">
+                        </div>
+                    </div>
+                    <div style="text-align: right; margin-top: 15px;">
+                        <button type="submit" class="btn-submit" style="height: 45px; padding: 0 25px;">Registrar Investimento</button>
+                    </div>
+                </form>
+
+                <div class="list-section">
+                    <table id="aportes-table" style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <thead style="background: #eff6ff; text-align: left;">
+                            <tr>
+                                <th style="padding: 15px; border-bottom: 2px solid #bfdbfe; color: #1e3a8a;">Data</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #bfdbfe; color: #1e3a8a;">Ativo</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #bfdbfe; color: #1e3a8a;">Categoria</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #bfdbfe; color: #1e3a8a; text-align: right;">Valor</th>
+                                <th style="padding: 15px; border-bottom: 2px solid #bfdbfe; color: #1e3a8a; text-align: center;">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </section>
             <section id="tab-mensal" class="tab-content" style="display: none;">
                 <div style="margin-bottom: 25px;">
                     <h2 style="color: #1e293b; font-size: 1.5rem; margin-bottom: 8px;">Painel de Contas Fixas</h2>

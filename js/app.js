@@ -34,6 +34,13 @@ const App = {
         
         // 5. Carrega os dados na tela
         this.loadData();
+        // (Adicione isso no final do App.init)
+        const formAporte = document.getElementById('form-aporte');
+        if (formAporte) {
+            // Coloca a data de hoje por padrão
+            document.getElementById('aporte-data').value = new Date().toISOString().split('T')[0];
+            formAporte.addEventListener('submit', (e) => this.handleAporteSubmit(e));
+        }
     },
 
     loadData: function() {
@@ -168,6 +175,14 @@ const App = {
         // Se abriu a aba Mensal, carrega os dados dela
         if (tabId === 'tab-mensal') {
             this.updateRecurringTab();
+        }
+        // Se abriu a aba Mensal, carrega os dados dela
+        if (tabId === 'tab-mensal') {
+            this.updateRecurringTab();
+        }
+        // Se abriu a aba Aporte, carrega os dados dela
+        if (tabId === 'tab-aporte') {
+            this.updateAporteTab();
         }
     },
 
@@ -314,6 +329,85 @@ const App = {
             `;
             tbody.appendChild(tr);
         });
+    },
+    // --- LÓGICA DA ABA APORTE (INVESTIMENTOS) ---
+
+    handleAporteSubmit: function(e) {
+        e.preventDefault();
+        
+        // Pega os valores
+        const aporte = {
+            id: Date.now().toString(),
+            description: document.getElementById('aporte-desc').value,
+            category: document.getElementById('aporte-cat').value,
+            amount: parseFloat(document.getElementById('aporte-valor').value),
+            date: document.getElementById('aporte-data').value
+        };
+
+        // Salva no LocalStorage (Numa tabela separada só para investimentos)
+        const aportes = JSON.parse(localStorage.getItem('finance_aportes') || '[]');
+        aportes.push(aporte);
+        localStorage.setItem('finance_aportes', JSON.stringify(aportes));
+
+        // Limpa o form e atualiza a tela
+        document.getElementById('aporte-desc').value = '';
+        document.getElementById('aporte-valor').value = '';
+        
+        this.updateAporteTab();
+        alert("Investimento registrado com sucesso! 🚀");
+    },
+
+    updateAporteTab: function() {
+        const tbody = document.querySelector('#aportes-table tbody');
+        if (!tbody) return;
+        
+        // Puxa do banco
+        const allAportes = JSON.parse(localStorage.getItem('finance_aportes') || '[]');
+        
+        // Filtra pelo mês selecionado no topo da tela
+        const currentMonth = document.getElementById('month-filter').value; // Ex: "2026-03"
+        const filteredAportes = allAportes.filter(a => a.date.startsWith(currentMonth));
+        
+        let totalMes = 0;
+        tbody.innerHTML = '';
+        
+        if (filteredAportes.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color: #64748b;">Nenhum aporte registrado neste mês. Que tal investir algo?</td></tr>`;
+        } else {
+            // Ordena e desenha a tabela
+            filteredAportes.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(a => {
+                totalMes += Number(a.amount);
+                
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = "1px solid #f1f5f9";
+                
+                const [ano, mes, dia] = a.date.split('-');
+                
+                tr.innerHTML = `
+                    <td style="padding: 15px; color: #64748b;">${dia}/${mes}/${ano}</td>
+                    <td style="padding: 15px; font-weight: 600; color: #1e3a8a;">${a.description}</td>
+                    <td style="padding: 15px;"><span style="background: #dbeafe; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; color: #1e40af;">${a.category}</span></td>
+                    <td style="padding: 15px; font-weight: bold; color: #3b82f6; text-align: right;">R$ ${a.amount.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    <td style="padding: 15px; text-align: center;">
+                        <button onclick="App.deleteAporte('${a.id}')" style="background: none; border: none; cursor: pointer; font-size: 1.1rem;" title="Excluir">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        // Atualiza o Card
+        document.getElementById('aporte-total-mes').textContent = `R$ ${totalMes.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+    },
+
+    deleteAporte: function(id) {
+        if (confirm("Tem certeza que deseja excluir este investimento?")) {
+            let aportes = JSON.parse(localStorage.getItem('finance_aportes') || '[]');
+            aportes = aportes.filter(a => String(a.id) !== String(id));
+            localStorage.setItem('finance_aportes', JSON.stringify(aportes));
+            
+            this.updateAporteTab();
+        }
     }
 };
 
