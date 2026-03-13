@@ -495,6 +495,62 @@ td { border-bottom: 1px solid var(--border-color) !important; color: var(--text-
     background-image: none !important;
     border-color: var(--border-color) !important;
 }
+/* =========================================
+   10. PREVISÃO (BARRAS DE PROGRESSO)
+   ========================================= */
+.previsao-container { display: flex; flex-direction: column; gap: 20px; }
+
+.budget-item { 
+    background: var(--card-bg); 
+    padding: 20px; 
+    border-radius: var(--radius); 
+    border: 1px solid var(--border-color); 
+}
+
+.budget-header { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 12px; 
+    font-size: 1rem; 
+    color: var(--text-main); 
+    font-weight: 600;
+}
+
+.budget-meta { font-size: 0.85rem; color: var(--text-muted); }
+
+/* A calha (fundo) da barra */
+.progress-bar-bg { 
+    background: var(--input-bg); 
+    height: 14px; 
+    border-radius: 7px; 
+    overflow: hidden; 
+    position: relative; 
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* O preenchimento dinâmico da barra */
+.progress-bar-fill { 
+    height: 100%; 
+    border-radius: 7px; 
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s ease; 
+}
+
+.budget-actions { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-top: 12px; 
+}
+
+.btn-small-delete { 
+    background: none; 
+    border: none; 
+    color: var(--danger-color); 
+    cursor: pointer; 
+    font-size: 0.85rem; 
+    opacity: 0.8;
+}
+.btn-small-delete:hover { opacity: 1; text-decoration: underline; }
 /* RESPONSIVIDADE */
 @media (max-width: 1024px) {
     .row-grid {

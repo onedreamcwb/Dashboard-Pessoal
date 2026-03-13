@@ -40,6 +40,12 @@ const App = {
         if (formPatrimonio) {
             formPatrimonio.addEventListener('submit', (e) => this.handlePatrimonioSubmit(e));
         }
+        // Ouvinte do formulário de Previsão
+        const formPrevisao = document.getElementById('form-previsao');
+        if (formPrevisao) {
+            this.populatePrevisaoCategories();
+            formPrevisao.addEventListener('submit', (e) => this.handlePrevisaoSubmit(e));
+        }
     },
 
     loadData: function() {
@@ -163,6 +169,8 @@ const App = {
         if (tabId === 'tab-mensal') this.updateRecurringTab();
         if (tabId === 'tab-aporte') this.updateAporteTab();
         if (tabId === 'tab-patrimonio') this.updatePatrimonioTab();
+        // Atualiza a aba de previsão quando ela for aberta
+        if (tabId === 'tab-previsao') this.updatePrevisaoTab();
     },
 
     toggleSidebar: function() {
@@ -404,6 +412,116 @@ const App = {
             patrimonio = patrimonio.filter(p => String(p.id) !== String(id));
             localStorage.setItem('finance_patrimonio', JSON.stringify(patrimonio));
             this.updatePatrimonioTab();
+        }
+    },
+    // --- LÓGICA DA ABA DE PREVISÃO (ORÇAMENTO) ---
+
+    populatePrevisaoCategories: function() {
+        const select = document.getElementById('previsao-cat');
+        if (!select || typeof CONFIG === 'undefined') return;
+        
+        select.innerHTML = '';
+        // Puxa as categorias de Saída (Gastos) lá do constants.js
+        CONFIG.CATEGORIAS_SAIDA.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            select.appendChild(option);
+        });
+    },
+
+    handlePrevisaoSubmit: function(e) {
+        e.preventDefault();
+        const category = document.getElementById('previsao-cat').value;
+        const amount = parseFloat(document.getElementById('previsao-valor').value);
+
+        // Guarda o limite no LocalStorage num objeto { "Mercado": 800, "Lazer": 200 }
+        let budgets = JSON.parse(localStorage.getItem('finance_budgets') || '{}');
+        budgets[category] = amount; 
+        localStorage.setItem('finance_budgets', JSON.stringify(budgets));
+
+        document.getElementById('previsao-valor').value = '';
+        this.updatePrevisaoTab();
+        alert("Orçamento definido com sucesso! 🎯");
+    },
+
+    updatePrevisaoTab: function() {
+        const container = document.getElementById('previsao-lista');
+        if (!container) return;
+
+        const budgets = JSON.parse(localStorage.getItem('finance_budgets') || '{}');
+        const allTransactions = Storage.getTransactions();
+        
+        // Foca apenas nos gastos do mês selecionado
+        const saidasMes = allTransactions.filter(t => t.type === 'saida' && t.date.startsWith(this.state.currentMonth));
+        
+        let totalOrcado = 0;
+        let totalGastoOrcado = 0;
+        
+        container.innerHTML = '';
+        const categoriasOrcadas = Object.keys(budgets);
+        
+        if (categoriasOrcadas.length === 0) {
+            container.innerHTML = '<div class="budget-item" style="text-align:center; color: var(--text-muted);">Nenhum limite definido. Escolha uma categoria e defina um orçamento para começar.</div>';
+        } else {
+            categoriasOrcadas.forEach(cat => {
+                const limite = budgets[cat];
+                totalOrcado += limite;
+                
+                // Soma tudo o que já gastou nesta categoria este mês
+                const gasto = saidasMes.filter(t => t.category === cat).reduce((acc, t) => acc + Number(t.amount), 0);
+                totalGastoOrcado += gasto;
+                
+                // Calcula a percentagem da barra
+                let percentual = (gasto / limite) * 100;
+                let percentualVisual = percentual > 100 ? 100 : percentual; // A barra não passa dos 100% visualmente
+                
+                // Inteligência de Cores:
+                // Verde (< 75%), Amarelo (75% - 95%), Vermelho (> 95%)
+                let corBarra = 'var(--success-color)';
+                if (percentual >= 75 && percentual < 95) corBarra = 'var(--warning-color)';
+                if (percentual >= 95) corBarra = 'var(--danger-color)';
+                
+                const div = document.createElement('div');
+                div.className = 'budget-item';
+                
+                div.innerHTML = `
+                    <div class="budget-header">
+                        <span>${cat}</span>
+                        <span>R$ ${gasto.toLocaleString('pt-BR', {minimumFractionDigits: 2})} / R$ ${limite.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: ${percentualVisual}%; background-color: ${corBarra};"></div>
+                    </div>
+                    <div class="budget-actions">
+                        <span class="budget-meta"><strong style="color: ${corBarra};">${percentual.toFixed(1)}%</strong> utilizado</span>
+                        <button class="btn-small-delete" onclick="App.deletePrevisao('${cat}')">🗑️ Remover Limite</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        // Atualiza os Totais no topo do ecrã
+        const elTotalOrcamento = document.getElementById('previsao-total-orcamento');
+        const elTotalGasto = document.getElementById('previsao-total-gasto');
+        
+        if (elTotalOrcamento) elTotalOrcamento.textContent = `R$ ${totalOrcado.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        
+        if (elTotalGasto) {
+            elTotalGasto.textContent = `R$ ${totalGastoOrcado.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            // Se gastar no total mais do que o planeado, o texto fica vermelho
+            elTotalGasto.style.color = totalGastoOrcado > totalOrcado ? 'var(--danger-color)' : 'var(--text-muted)';
+        }
+    },
+
+    deletePrevisao: function(category) {
+        if (confirm(`Deseja remover o limite de orçamento para a categoria: ${category}?`)) {
+            let budgets = JSON.parse(localStorage.getItem('finance_budgets') || '{}');
+            delete budgets[category]; // Remove a chave do objeto
+            localStorage.setItem('finance_budgets', JSON.stringify(budgets));
+            
+            this.updatePrevisaoTab();
         }
     }
 };

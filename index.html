@@ -319,7 +319,44 @@
             </section>
 
             <section id="tab-previsao" class="tab-content">
-                <h2 class="text-title">Planejado vs Realizado (Em breve)</h2>
+                <div class="mb-25">
+                    <h2 class="text-title">Planejado vs Realizado</h2>
+                    <p class="text-subtitle">Defina o seu orçamento mensal por categoria de despesa e acompanhe se está dentro do limite em tempo real.</p>
+                </div>
+
+                <div class="summary-cards grid-1-card">
+                    <div class="card" style="border-left: 4px solid var(--primary-color);">
+                        <h3 class="text-card-title">Orçamento Global (Mês Atual)</h3>
+                        <span class="value text-primary" id="previsao-total-orcamento">R$ 0,00</span>
+                        <p class="text-subtitle" style="margin-top: 8px; font-size: 0.9rem;">
+                            Já gasto: <span id="previsao-total-gasto" style="font-weight: bold; color: var(--text-main);">R$ 0,00</span>
+                        </p>
+                    </div>
+                </div>
+
+                <form id="form-previsao" class="transaction-form mb-25">
+                    <h3 class="form-title text-primary">🎯 Definir Limite de Gasto</h3>
+                    <div class="grid-4-cols" style="grid-template-columns: 2fr 1fr;">
+                        <div class="input-group">
+                            <label>Categoria de Despesa</label>
+                            <select id="previsao-cat" required></select>
+                        </div>
+                        <div class="input-group">
+                            <label>Limite Mensal (R$)</label>
+                            <input type="number" id="previsao-valor" placeholder="0,00" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-actions-right">
+                        <button type="submit" class="btn-submit btn-primary">Guardar Orçamento</button>
+                    </div>
+                </form>
+
+                <div class="list-section">
+                    <div class="section-header mb-15">
+                        <h3>Acompanhamento por Categoria</h3>
+                    </div>
+                    <div id="previsao-lista" class="previsao-container"></div>
+                </div>
             </section>
 
             <section id="tab-patrimonio" class="tab-content">
